@@ -28,3 +28,12 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+
+- All data access goes through `src/lib/api.ts` / `src/lib/auth-api.ts`, which call `db()` from `src/lib/supabaseClient.ts`; without env config `db()` throws `BackendNotConfiguredError`. Why: the app must run with no backend and never fake data or success.
+- Show missing-backend states with `src/components/shared/BackendNotice.tsx` (`QueryErrorState`, `DraftNotice`, `BackendPreviewBanner`) rather than ad-hoc messages. Why: one consistent honest message.
+- Business details (contact, branches, wallet numbers, delivery fee, tax) live in `src/lib/store-config.ts` / `src/lib/pricing.ts` as `null` until published by the backend; UI must handle `null`. Why: no invented business values.
+- Success toasts fire only after a real backend call resolves. Why: no fake save/send confirmations.
+- Admin "local layout preview" (`src/lib/preview.ts`) is dev-only, sessionStorage-scoped and never touches `useAuth`. Why: inspect admin UI without fabricating auth.
+- Backend contract and remaining work are documented in `docs/frontend-completion/`. Why: starting point for the backend phase.
