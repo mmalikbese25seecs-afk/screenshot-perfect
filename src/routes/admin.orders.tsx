@@ -1,3 +1,4 @@
+import { BackendNotice } from "@/components/shared/BackendNotice";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -128,6 +129,7 @@ function OrdersPage() {
 
   return (
     <AdminPage title="Orders" subtitle="All online and POS orders across PINDI CRUST.">
+      <BackendNotice when="unconfigured" compact className="mb-4" title="No live data" description="Figures below stay empty until the backend is connected. Zeros here are not real results." />
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex min-w-0 items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 sm:max-w-xs">
           <Search className="size-4 shrink-0 text-muted-foreground" />

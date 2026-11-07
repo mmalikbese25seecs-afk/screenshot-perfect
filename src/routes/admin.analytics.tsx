@@ -1,3 +1,4 @@
+import { BackendNotice } from "@/components/shared/BackendNotice";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQueries } from "@tanstack/react-query";
@@ -115,6 +116,7 @@ function AnalyticsPage() {
       subtitle="Deep-dive into sales, customers and product performance."
       action={
         <div className="flex flex-wrap gap-1.5 overflow-x-auto no-scrollbar">
+      <BackendNotice when="unconfigured" compact className="mb-4" title="No live data" description="Figures below stay empty until the backend is connected. Zeros here are not real results." />
           {ranges.map((r) => (
             <button
               key={r}
