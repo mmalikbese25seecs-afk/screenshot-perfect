@@ -74,9 +74,6 @@ function WelcomePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             >
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary/25 px-3 py-1 text-[11px] font-bold tracking-wide text-secondary uppercase">
-                <Sparkles className="size-3" /> Rated 4.9 by 3,200+ crust-lovers
-              </span>
               <h1 className="font-display mt-4 text-4xl leading-[1.05] font-bold text-balance text-cream sm:text-5xl">
                 {storeInfo.tagline}
               </h1>

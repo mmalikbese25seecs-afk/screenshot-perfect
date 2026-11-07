@@ -73,15 +73,13 @@ const sections: LegalSection[] = [
     id: "rights",
     title: "Your rights",
     body: [
-      "You can request a copy of your data, correct inaccurate details, or ask us to delete your account by emailing hello@pindicrust.pk.",
+      "You can request a copy of your data, correct inaccurate details, or ask us to delete your account by contacting us through the Contact page.",
       "We respond to all verified privacy requests within 30 days.",
     ],
   },
   {
     id: "contact",
     title: "Contact",
-    body: [
-      "Questions about this policy? Write to hello@pindicrust.pk or call +92 51 111 74634 between 11:00 AM and 2:00 AM daily.",
-    ],
+    body: ["Questions about this policy? Reach us through the Contact page."],
   },
 ];

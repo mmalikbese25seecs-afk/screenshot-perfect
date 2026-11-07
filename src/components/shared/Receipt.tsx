@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { formatPKR } from "@/lib/format";
+import { storeInfo } from "@/lib/store-config";
 import { ArrowLeft, Printer, Scissors } from "lucide-react";
 
 export interface ReceiptProps {
@@ -78,8 +79,8 @@ export function Receipt({ order, className }: ReceiptProps) {
         </div>
 
         <div className="text-center text-[10px] text-black/70 leading-snug">
-          <div>Rawalpindi, Pakistan</div>
-          <div>+923358401426</div>
+          {storeInfo.address && <div>{storeInfo.address}</div>}
+          {storeInfo.phone && <div>{storeInfo.phone}</div>}
         </div>
 
         <Divider />
@@ -185,8 +186,12 @@ export function Receipt({ order, className }: ReceiptProps) {
         {/* Footer */}
         <div className="text-center text-[10px] leading-snug mt-1">
           <div className="font-semibold">Thank you for your order!</div>
-          <div className="text-black/50 mt-1">Questions? WhatsApp us</div>
-          <div className="text-black/50">+923358401426</div>
+          {storeInfo.whatsapp && (
+            <>
+              <div className="text-black/50 mt-1">Questions? WhatsApp us</div>
+              <div className="text-black/50">+{storeInfo.whatsapp}</div>
+            </>
+          )}
         </div>
 
         {/* Cut line */}
