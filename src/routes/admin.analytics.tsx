@@ -116,7 +116,6 @@ function AnalyticsPage() {
       subtitle="Deep-dive into sales, customers and product performance."
       action={
         <div className="flex flex-wrap gap-1.5 overflow-x-auto no-scrollbar">
-      <BackendNotice when="unconfigured" compact className="mb-4" title="No live data" description="Figures below stay empty until the backend is connected. Zeros here are not real results." />
           {ranges.map((r) => (
             <button
               key={r}
@@ -134,6 +133,13 @@ function AnalyticsPage() {
         </div>
       }
     >
+      <BackendNotice
+        when="unconfigured"
+        compact
+        className="mb-4"
+        title="No live data"
+        description="Figures below stay empty until the backend is connected. Zeros here are not real results."
+      />
       {loading ? (
         <div className="space-y-4">
           <Skeleton className="h-16 w-full rounded-2xl" />

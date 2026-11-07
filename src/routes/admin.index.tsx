@@ -160,7 +160,13 @@ function DashboardPage() {
 
   return (
     <AdminPage title="Dashboard" subtitle="Today's snapshot across all PINDI CRUST channels.">
-      <BackendNotice when="unconfigured" compact className="mb-4" title="No live data" description="Figures below stay empty until the backend is connected. Zeros here are not real results." />
+      <BackendNotice
+        when="unconfigured"
+        compact
+        className="mb-4"
+        title="No live data"
+        description="Figures below stay empty until the backend is connected. Zeros here are not real results."
+      />
       <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         <StatCard
           label="Revenue Today"

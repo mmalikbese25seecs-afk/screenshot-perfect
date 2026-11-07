@@ -393,14 +393,16 @@ function HomePage() {
               )}
             </ul>
           </div>
-          {stores.length > 0 && storeInfo.address && (<div className="overflow-hidden rounded-3xl border border-border shadow-soft">
-            <iframe
-              title="Pindi Crust store locations map"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=72.98%2C33.52%2C73.16%2C33.66&layer=mapnik"
-              className="h-80 w-full lg:h-[26rem]"
-              loading="lazy"
-            />
-          </div>)}
+          {stores.length > 0 && storeInfo.address && (
+            <div className="overflow-hidden rounded-3xl border border-border shadow-soft">
+              <iframe
+                title="Pindi Crust store locations map"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=72.98%2C33.52%2C73.16%2C33.66&layer=mapnik"
+                className="h-80 w-full lg:h-[26rem]"
+                loading="lazy"
+              />
+            </div>
+          )}
         </div>
       </section>
     </div>

@@ -30,12 +30,16 @@ export function BackendNotice({
   description = BACKEND_NOT_CONNECTED_MESSAGE,
   className,
   compact,
+  when = "always",
 }: {
+  /** "unconfigured" renders nothing once a backend is configured. */
+  when?: "always" | "unconfigured";
   title?: string | undefined;
   description?: string | undefined;
   className?: string | undefined;
   compact?: boolean | undefined;
 }) {
+  if (when === "unconfigured" && isBackendConfigured) return null;
   return (
     <div
       role="status"

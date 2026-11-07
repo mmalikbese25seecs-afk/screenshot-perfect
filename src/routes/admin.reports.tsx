@@ -260,7 +260,13 @@ function ReportsPage() {
 
   return (
     <AdminPage title="Reports" subtitle="Generate and export business reports on demand.">
-      <BackendNotice when="unconfigured" compact className="mb-4" title="No live data" description="Figures below stay empty until the backend is connected. Zeros here are not real results." />
+      <BackendNotice
+        when="unconfigured"
+        compact
+        className="mb-4"
+        title="No live data"
+        description="Figures below stay empty until the backend is connected. Zeros here are not real results."
+      />
       <div className="rounded-2xl border border-border bg-card p-4 shadow-soft sm:p-5">
         <h2 className="font-display text-lg font-bold">Report type</h2>
         <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-6">

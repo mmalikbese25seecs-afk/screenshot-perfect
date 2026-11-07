@@ -126,14 +126,16 @@ function ContactPage() {
               </li>
             ))}
           </ul>
-          {stores.length > 0 && storeInfo.address && (<div className="mt-4 overflow-hidden rounded-3xl border border-border shadow-soft">
-            <iframe
-              title="Pindi Crust branch locations map"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=72.98%2C33.52%2C73.16%2C33.66&layer=mapnik"
-              className="h-64 w-full"
-              loading="lazy"
-            />
-          </div>)}
+          {stores.length > 0 && storeInfo.address && (
+            <div className="mt-4 overflow-hidden rounded-3xl border border-border shadow-soft">
+              <iframe
+                title="Pindi Crust branch locations map"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=72.98%2C33.52%2C73.16%2C33.66&layer=mapnik"
+                className="h-64 w-full"
+                loading="lazy"
+              />
+            </div>
+          )}
         </div>
 
         <div className="rounded-3xl border border-border/70 bg-card p-5 shadow-soft sm:p-6">
