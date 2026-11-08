@@ -216,7 +216,7 @@ function AdsPage() {
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
+        <DialogContent className="max-h-[90dvh] w-[calc(100%-2rem)] overflow-y-auto rounded-lg">
           <DialogHeader>
             <DialogTitle>New banner</DialogTitle>
             <DialogDescription>
