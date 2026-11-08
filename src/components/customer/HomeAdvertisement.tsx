@@ -45,7 +45,10 @@ export function Advertisement({ ad, draft = false }: { ad: Offer; draft?: boolea
 
 export function HomeAdvertisement({ offers, enabled }: { offers: Offer[]; enabled: boolean }) {
   const [draft, setDraft] = useState<Offer | null>(null);
-  useEffect(() => { setDraft(takeAdDraftPreview()); }, []);
+  useEffect(() => {
+    const preview = takeAdDraftPreview();
+    if (preview) setDraft(preview);
+  }, []);
   const ad = draft ?? (enabled ? offers.find((offer) => offer.active && validAdDestination(offer)) : undefined);
   return ad ? <Advertisement key={ad.id} ad={ad} draft={Boolean(draft)} /> : null;
 }
