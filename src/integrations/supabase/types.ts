@@ -824,6 +824,54 @@ export type Database = {
       }
       is_admin: { Args: { _user_id: string }; Returns: boolean }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
+      log_activity: {
+        Args: {
+          p_action: string
+          p_level?: string
+          p_module?: string
+          p_target?: string
+        }
+        Returns: undefined
+      }
+      place_order: {
+        Args: {
+          p_address: string
+          p_customer_name: string
+          p_idempotency_key?: string
+          p_items?: Json
+          p_manual_discount_percent?: number
+          p_notes?: string
+          p_payment: string
+          p_phone: string
+          p_promo_code?: string
+          p_source: string
+          p_transaction_id?: string
+        }
+        Returns: {
+          delivery_fee: number
+          discount: number
+          order_number: string
+          subtotal: number
+          tax: number
+          total: number
+        }[]
+      }
+      send_customer_message: {
+        Args: { p_body: string; p_customer_id: string }
+        Returns: undefined
+      }
+      track_order: {
+        Args: { p_order_number: string; p_phone?: string }
+        Returns: Json
+      }
+      validate_promo: {
+        Args: { p_code: string }
+        Returns: {
+          code: string
+          discount_type: string
+          discount_value: number
+        }[]
+      }
     }
     Enums: {
       app_role: "customer" | "manager" | "admin" | "developer"
