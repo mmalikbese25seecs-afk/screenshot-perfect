@@ -21,6 +21,7 @@ import {
 import { images } from "@/lib/images";
 import { storeInfo } from "@/lib/store-config";
 import { fetchMyProfile, landingRouteForRole, signInWithPassword } from "@/lib/auth-api";
+import { adminPreviewAvailable, setAdminPreview } from "@/lib/preview";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -33,6 +34,8 @@ export const Route = createFileRoute("/login")({
       },
       { property: "og:title", content: "Sign In — PINDI CRUST" },
       { property: "og:description", content: "Access your PINDI CRUST account in seconds." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: LoginPage,
@@ -91,6 +94,14 @@ function LoginPage() {
         </p>
       }
     >
+      {adminPreviewAvailable && (
+        <Button type="button" variant="outline" className="mb-5 w-full" onClick={() => {
+          setAdminPreview(true);
+          navigate({ to: "/admin" });
+        }}>
+          Preview admin pages — no login
+        </Button>
+      )}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField

@@ -18,6 +18,7 @@ import type {
 import type { CartLine } from "@/store/cart";
 import type { AppliedPromo } from "./pricing";
 import { slugify } from "./format";
+import { validAdDestination, type AdDestination } from "./advertisements";
 
 // ============================================================
 // Helpers
@@ -793,7 +794,7 @@ export async function deleteReview(id: string): Promise<void> {
 // Offers (homepage promo banners)
 // ============================================================
 
-export type Offer = {
+export type Offer = AdDestination & {
   id: string;
   title: string;
   subtitle: string;
@@ -812,6 +813,8 @@ function mapOffer(row: DbRow): Offer {
     cta: row.cta ?? "",
     image: row.image_url ?? "",
     active: row.is_active ?? true,
+    linkType: row.link_type === "external" ? "external" : "product",
+    linkTarget: row.link_target ?? "",
   };
 }
 
@@ -836,7 +839,7 @@ export async function fetchAllOffers(): Promise<Offer[]> {
   return (data ?? []).map(mapOffer);
 }
 
-export type OfferInput = {
+export type OfferInput = AdDestination & {
   title: string;
   subtitle: string;
   tag: string;
@@ -846,6 +849,7 @@ export type OfferInput = {
 };
 
 export async function createOffer(input: OfferInput): Promise<void> {
+  if (!validAdDestination(input)) throw new Error("Choose a menu item or enter a valid HTTPS website link.");
   const { data: last, error: lastError } = await db()
     .from("offers")
     .select("sort_order")
@@ -862,6 +866,8 @@ export async function createOffer(input: OfferInput): Promise<void> {
       cta: input.cta.trim(),
       image_url: input.image.trim() || null,
       is_active: input.active,
+      link_type: input.linkType,
+      link_target: input.linkTarget,
       sort_order: (last?.sort_order ?? 0) + 1,
     });
   if (error) throw error;

@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from "react";
+import type { Offer } from "./api";
 
 /**
  * Local-only admin preview.
@@ -38,4 +39,23 @@ export function useAdminPreview(): boolean {
     read,
     () => false,
   );
+}
+
+const AD_KEY = "pindi-ad-draft-preview";
+
+export function setAdDraftPreview(ad: Offer) {
+  if (!adminPreviewAvailable || typeof window === "undefined") return;
+  window.sessionStorage.setItem(AD_KEY, JSON.stringify(ad));
+}
+
+export function takeAdDraftPreview(): Offer | null {
+  if (!adminPreviewAvailable || typeof window === "undefined") return null;
+  const value = window.sessionStorage.getItem(AD_KEY);
+  window.sessionStorage.removeItem(AD_KEY);
+  if (!value) return null;
+  try {
+    return JSON.parse(value) as Offer;
+  } catch {
+    return null;
+  }
 }

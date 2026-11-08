@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { QueryErrorState } from "@/components/shared/BackendNotice";
 import { Image as ImageIcon, ImageOff, Megaphone, PauseCircle, Plus, Trash2 } from "lucide-react";
@@ -21,6 +21,10 @@ import {
 } from "@/components/ui/dialog";
 import { createOffer, deleteOffer, errorMessage, fetchAllOffers, setOfferActive } from "@/lib/api";
 import { useAuth } from "@/store/auth";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { fetchProducts } from "@/lib/api";
+import { validAdDestination, type AdDestination } from "@/lib/advertisements";
+import { adminPreviewAvailable, setAdDraftPreview } from "@/lib/preview";
 
 export const Route = createFileRoute("/admin/advertisements")({
   head: () => ({
@@ -33,14 +37,18 @@ export const Route = createFileRoute("/admin/advertisements")({
       { name: "robots", content: "noindex" },
       { property: "og:title", content: "Advertisements — PINDI CRUST Admin" },
       { property: "og:description", content: "Homepage banners and promotional placements." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: AdsPage,
 });
 
-const emptyDraft = { title: "", subtitle: "", tag: "", cta: "Order now", image: "" };
+const emptyDraft = { title: "", subtitle: "", tag: "", cta: "View item", image: "", linkType: "product" as AdDestination["linkType"], linkTarget: "" };
 
 function AdsPage() {
+  const navigate = useNavigate();
+  const { data: products = [] } = useQuery({ queryKey: ["products"], queryFn: fetchProducts });
   const queryClient = useQueryClient();
   const isManager = useAuth((s) => s.role) === "manager";
   const {
@@ -87,11 +95,19 @@ function AdsPage() {
     onError,
   });
 
-  function create() {
-    if (!draft.title.trim()) return void toast.error("Banner title is required");
+  function validate() {
+    if (!draft.title.trim()) { toast.error("Banner title is required"); return false; }
     if (draft.image.trim() && !/^https?:\/\//i.test(draft.image.trim())) {
-      return void toast.error("Image URL must start with https://");
+      toast.error("Image URL must start with https://"); return false;
     }
+    if (!validAdDestination(draft)) {
+      toast.error(draft.linkType === "product" ? "Choose a menu item or enter its item slug." : "Enter a valid HTTPS website link."); return false;
+    }
+    return true;
+  }
+
+  function create() {
+    if (!validate()) return;
     createMutation.mutate();
   }
 
@@ -175,6 +191,9 @@ function AdsPage() {
               <p className="mt-0.5 truncate text-xs text-muted-foreground">
                 {[ad.tag, ad.subtitle].filter(Boolean).join(" · ") || "No subtitle"}
               </p>
+              <p className="mt-2 truncate text-xs text-muted-foreground" title={ad.linkTarget}>
+                {ad.linkType === "external" ? "Sponsored website" : "Menu item"} · {ad.linkTarget || "Destination not set"}
+              </p>
               <div className="mt-3 flex items-center justify-between">
                 <Switch
                   checked={ad.active}
@@ -197,11 +216,11 @@ function AdsPage() {
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
+        <DialogContent className="max-h-[90dvh] w-[calc(100%-2rem)] overflow-y-auto rounded-lg">
           <DialogHeader>
             <DialogTitle>New banner</DialogTitle>
             <DialogDescription>
-              Shown in the homepage offers strip as soon as it's saved.
+              Homepage advertisement · closes automatically after 10 seconds.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
@@ -253,8 +272,37 @@ function AdsPage() {
                 onChange={(e) => setDraft({ ...draft, image: e.target.value })}
               />
             </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="ad-type">Advertisement links to</Label>
+              <Select value={draft.linkType} onValueChange={(value) => setDraft({ ...draft, linkType: value === "external" ? "external" : "product", linkTarget: "", cta: value === "external" ? "Visit website" : "View item" })}>
+                <SelectTrigger id="ad-type"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="product">Menu item / deal</SelectItem>
+                  <SelectItem value="external">Third-party website</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            {draft.linkType === "product" && products.length > 0 ? (
+              <div className="space-y-1.5">
+                <Label htmlFor="ad-product">Menu item</Label>
+                <Select value={draft.linkTarget} onValueChange={(linkTarget) => setDraft({ ...draft, linkTarget })}>
+                  <SelectTrigger id="ad-product"><SelectValue placeholder="Choose an item" /></SelectTrigger>
+                  <SelectContent>{products.map((p) => <SelectItem key={p.id} value={p.slug}>{p.name}</SelectItem>)}</SelectContent>
+                </Select>
+              </div>
+            ) : (
+              <div className="space-y-1.5">
+                <Label htmlFor="ad-target">{draft.linkType === "product" ? "Item slug" : "Website link"}</Label>
+                <Input id="ad-target" placeholder={draft.linkType === "product" ? "item-slug" : "https://…"} value={draft.linkTarget} onChange={(e) => setDraft({ ...draft, linkTarget: e.target.value.trim() })} />
+              </div>
+            )}
           </div>
           <DialogFooter>
+            {adminPreviewAvailable && <Button variant="secondary" onClick={() => {
+              if (!validate()) return;
+              setAdDraftPreview({ ...draft, id: `draft-${Date.now()}`, active: true });
+              navigate({ to: "/" });
+            }}>Preview on homepage</Button>}
             <Button variant="outline" onClick={() => setOpen(false)}>
               Cancel
             </Button>

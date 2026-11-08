@@ -26,6 +26,11 @@ Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`. `db()` then returns a real
 | **New** RPC `send_customer_message`, table `customer_notes` | customers | |
 | **New** `inventory_items` (name, group, unit, quantity, low_stock_threshold) | inventory | Assumed model; confirm |
 | `branches` | home/contact/about/store | Replace `stores = []` |
+| `offers.link_type`, `offers.link_target` | homepage advertisements | Proposed fields: `product` + product slug, or `external` + HTTPS URL. Validate destinations server-side before publishing. Existing offers without a destination are not displayed. |
+
+## Advertisement preview
+
+The advertisement editor supports a one-use, user-authored homepage draft preview in development only. It does not publish or save a banner. The homepage displays one active, valid linked advertisement per visit with a close button and automatic dismissal after 10 seconds. Publishing still requires the future offers backend contract above. Login now offers a direct development-only admin layout preview button; no authentication or permissions are created.
 
 ## Auth & authorization
 

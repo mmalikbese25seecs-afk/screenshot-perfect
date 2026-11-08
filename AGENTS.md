@@ -37,3 +37,4 @@ use the editor.
 - Success toasts fire only after a real backend call resolves. Why: no fake save/send confirmations.
 - Admin "local layout preview" (`src/lib/preview.ts`) is dev-only, sessionStorage-scoped and never touches `useAuth`. Why: inspect admin UI without fabricating auth.
 - Backend contract and remaining work are documented in `docs/frontend-completion/`. Why: starting point for the backend phase.
+- Homepage advertisements use validated product slugs or HTTPS external destinations; user-authored draft previews are development-only, one-use sessionStorage values separate from published offers. Why: exercise the real display without fabricated records or backend saves.
