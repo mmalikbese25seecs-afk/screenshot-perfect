@@ -19,7 +19,7 @@ import {
   Truck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { HomeAdvertisement } from "@/components/customer/HomeAdvertisement";
 import { SectionHeading } from "@/components/shared/Primitives";
 import { ProductCard } from "@/components/customer/ProductCard";
 import { images } from "@/lib/images";
@@ -37,6 +37,8 @@ export const Route = createFileRoute("/_shop/")({
           "Slow-fermented dough, wood-fired at 480°C. Order signature pizzas, burgers and dolci from Pindi Crust with live delivery tracking.",
       },
       { property: "og:title", content: "PINDI CRUST — Artisanal Crust, Pure Happiness" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       {
         property: "og:description",
         content: "Premium wood-fired pizza delivered hot across Rawalpindi & Islamabad.",
@@ -74,6 +76,7 @@ function HomePage() {
 
   return (
     <div className="pb-4">
+      <HomeAdvertisement offers={offers} enabled={promotionsEnabled} />
       {/* Hero */}
       <section className="relative isolate overflow-hidden">
         <img
@@ -192,60 +195,6 @@ function HomePage() {
                 </motion.div>
               );
             })}
-          </div>
-        </section>
-      )}
-
-      {/* Offers */}
-      {promotionsEnabled && offers.length > 0 && (
-        <section className="bg-surface-container py-14">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6">
-            <SectionHeading
-              eyebrow="Exclusive Deals"
-              title="Featured Offers"
-              action={
-                <Button asChild variant="ghost" size="sm">
-                  <Link to="/menu" search={{ category: undefined, sort: "popularity" as const }}>
-                    See all <ArrowRight />
-                  </Link>
-                </Button>
-              }
-            />
-            <div className="mt-7 grid gap-4 md:grid-cols-3">
-              {offers.map((o, i) => (
-                <motion.article
-                  key={o.id}
-                  initial={{ opacity: 0, y: 18 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.07 }}
-                  className="group relative isolate overflow-hidden rounded-3xl shadow-soft"
-                >
-                  <img
-                    src={o.image || images.margherita}
-                    alt={o.title}
-                    loading="lazy"
-                    width={900}
-                    height={900}
-                    className="h-52 w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-linear-to-t from-charcoal/92 via-charcoal/45 to-transparent" />
-                  <div className="absolute inset-x-0 bottom-0 p-5">
-                    <Badge variant="gold">{o.tag}</Badge>
-                    <h3 className="font-display mt-2 text-xl font-bold text-cream">{o.title}</h3>
-                    <p className="mt-1 text-xs text-cream/75">{o.subtitle}</p>
-                    <Button asChild size="sm" variant="glass" className="mt-3">
-                      <Link
-                        to="/menu"
-                        search={{ category: undefined, sort: "popularity" as const }}
-                      >
-                        {o.cta}
-                      </Link>
-                    </Button>
-                  </div>
-                </motion.article>
-              ))}
-            </div>
           </div>
         </section>
       )}
