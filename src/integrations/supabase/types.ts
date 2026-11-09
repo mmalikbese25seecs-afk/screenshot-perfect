@@ -815,6 +815,50 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      analytics_category_sales: {
+        Args: { p_days: number }
+        Returns: {
+          name: string
+          value: number
+        }[]
+      }
+      analytics_customer_growth: {
+        Args: never
+        Returns: {
+          month: string
+          newCustomers: number
+          returning: number
+        }[]
+      }
+      analytics_payment_split: {
+        Args: { p_days: number }
+        Returns: {
+          name: string
+          value: number
+        }[]
+      }
+      analytics_peak_hours: {
+        Args: { p_days: number }
+        Returns: {
+          hour: string
+          orders: number
+        }[]
+      }
+      analytics_revenue_trend: {
+        Args: { p_days: number }
+        Returns: {
+          day: string
+          orders: number
+          revenue: number
+        }[]
+      }
+      analytics_top_products: {
+        Args: { p_days: number; p_direction: string; p_limit: number }
+        Returns: {
+          name: string
+          sold: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -856,6 +900,10 @@ export type Database = {
           total: number
         }[]
       }
+      report_items: { Args: { p_days: number }; Returns: Json }
+      report_orders: { Args: { p_days: number }; Returns: Json }
+      report_payments: { Args: { p_days: number }; Returns: Json }
+      report_taxes: { Args: { p_days: number }; Returns: Json }
       send_customer_message: {
         Args: { p_body: string; p_customer_id: string }
         Returns: undefined
