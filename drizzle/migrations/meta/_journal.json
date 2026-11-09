@@ -22,6 +22,13 @@
       "when": 1794203204894,
       "tag": "0002_analytics_rpcs",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1794203241486,
+      "tag": "0003_realtime_publication",
+      "breakpoints": true
     }
   ]
 }
