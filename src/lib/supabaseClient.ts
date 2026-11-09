@@ -13,7 +13,9 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
  */
 
 const supabaseUrl = import.meta.env["VITE_SUPABASE_URL"] as string | undefined;
-const supabaseAnonKey = import.meta.env["VITE_SUPABASE_ANON_KEY"] as string | undefined;
+// Lovable Cloud exposes a publishable key; older setups used an anon key. Accept either.
+const supabaseAnonKey = (import.meta.env["VITE_SUPABASE_ANON_KEY"] ??
+  import.meta.env["VITE_SUPABASE_PUBLISHABLE_KEY"]) as string | undefined;
 
 export const isBackendConfigured = Boolean(supabaseUrl && supabaseAnonKey);
 
